@@ -1,0 +1,19 @@
+{
+  "name": "zoom_backend",
+  "version": "1.0.0",
+  "description": "it's a zoom clone for video calling and chatting",
+  "license": "ISC",
+  "author": "rohit gholap",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.1.0",
+    "http-status": "^2.1.0",
+    "mongoose": "^8.15.1",
+    "socket.io": "^4.8.1"
+  }
+}
