@@ -19,8 +19,9 @@ import { IoMdSend } from "react-icons/io";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import server from "../environment";
 
-const server_url = "https://zoom-clone-backend-q57o.onrender.com";
+const server_url = server.prod;
 
 let connections = {};
 
