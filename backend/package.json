@@ -4,15 +4,22 @@
   "description": "it's a zoom clone for video calling and chatting",
   "license": "ISC",
   "author": "rohit gholap",
-  "type": "commonjs",
-  "main": "index.js",
+  "main": "App.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/App.js",
+    "start": "node src/App.js",
+    "prod": "pm2 src/App.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "http-status": "^2.1.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.1",
     "socket.io": "^4.8.1"
   }
