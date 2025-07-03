@@ -20,7 +20,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const server_url = "http://localhost:8080";
+const server_url = "https://zoom-clone-backend-q57o.onrender.com";
 
 let connections = {};
 
