@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // All routes defined inside userRoutes will be accessible under this path. (eg. /users/login)
-app.use("/users", userRoutes);
+app.use("/", userRoutes);
 
 const PORT = process.env.PORT || 8080;
 const MONGO_URL = process.env.MONGO_URL;
