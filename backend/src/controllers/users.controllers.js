@@ -29,6 +29,8 @@ const login = async (req, res) => {
         .status(httpStatus.NOT_FOUND)
         .json({ message: "User Not Found", success: false });
     }
+    console.log("Provided password:", password);
+    console.log("User password from DB:", user.password);
     // Compare provided password with hashed password in DB
     if (await bcrypt.compare(password, user.password)) {
       // If password matches, generate a random token
