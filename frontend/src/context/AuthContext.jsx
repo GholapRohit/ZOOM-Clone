@@ -7,7 +7,7 @@ const AuthProvider = ({ children }) => {
 
   const getHistoryOfUser = async () => {
     try {
-      let url = `https://zoom-clone-backend-q57o.onrender.com/users/get_all_activity?user=${loggedInUser}`;
+      let url = `https://zoom-clone-backend-q57o.onrender.com/get_all_activity?user=${loggedInUser}`;
       let response = await fetch(url, {
         method: "GET",
         headers: { "Content-type": "application/json" },
@@ -24,7 +24,7 @@ const AuthProvider = ({ children }) => {
   const addToUserHistory = async (meetingCode) => {
     try {
       let request = await fetch(
-        "https://zoom-clone-backend-q57o.onrender.com/users/add_to_activity",
+        "https://zoom-clone-backend-q57o.onrender.com/add_to_activity",
         {
           method: "POST",
           headers: { "Content-type": "application/json" },

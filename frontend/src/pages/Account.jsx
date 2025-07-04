@@ -1,6 +1,5 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import user from "../../public/assets/user.png";
 import { handleError } from "../utils/Message";
 
 const Account = () => {

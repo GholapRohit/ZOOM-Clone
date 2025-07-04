@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
-// All routes defined inside userRoutes will be accessible under this path. (eg. /users/login)
+// All routes defined inside userRoutes will be accessible under this path. (eg. /login)
 app.use("/", userRoutes);
 
 const PORT = process.env.PORT || 8080;

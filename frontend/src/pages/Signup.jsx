@@ -25,7 +25,7 @@ const Signup = () => {
       return handleError("Please provide all the Details");
     }
     try {
-      const url = "http://localhost:8080/users/register";
+      const url = "http://localhost:8080/register";
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-type": "application/json" },

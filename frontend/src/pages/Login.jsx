@@ -27,7 +27,7 @@ const Login = () => {
       return handleError("Please provide all the Details");
     }
     try {
-      const url = "http://localhost:8080/users/login";
+      const url = "http://localhost:8080/login";
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-type": "application/json" },

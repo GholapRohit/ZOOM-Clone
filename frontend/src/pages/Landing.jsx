@@ -7,7 +7,7 @@ const Landing = () => {
 
   const check_login = async () => {
     try {
-      const url = "http://localhost:8080/users/check-auth";
+      const url = "http://localhost:8080/check-auth";
       const response = await fetch(url, {
         method: "GET",
         headers: { "Content-type": "application/json" },
