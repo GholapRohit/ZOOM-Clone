@@ -5,7 +5,6 @@ import {
   FaYoutube,
   FaGithub,
 } from "react-icons/fa";
-import ZOOMlogo from "../../public/assets/Zoom_Logo.png";
 
 const Footer = () => {
   return (

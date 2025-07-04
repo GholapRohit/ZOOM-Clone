@@ -8,6 +8,7 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 import ZOOMlogo from "../../public/assets/Zoom_Logo.png";
 import user from "../../public/assets/user.png";
@@ -123,10 +124,9 @@ export default function Navbar() {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {!loggedInUser ? (
-                  <a
+                  <Link
                     key="Join as Guest"
-                    href="/meet"
-                    aria-current={false ? "page" : undefined}
+                    to="/meet"
                     className={classNames(
                       false
                         ? "bg-gray-900 text-white"
@@ -135,7 +135,7 @@ export default function Navbar() {
                     )}
                   >
                     Join as Guest
-                  </a>
+                  </Link>
                 ) : (
                   <></>
                 )}
@@ -167,10 +167,9 @@ export default function Navbar() {
                 </a>
                 {!loggedInUser ? (
                   <>
-                    <a
+                    <Link
                       key="Register"
-                      href="/register"
-                      aria-current={false ? "page" : undefined}
+                      to="/register"
                       className={classNames(
                         false
                           ? "bg-gray-900 text-white"
@@ -179,11 +178,10 @@ export default function Navbar() {
                       )}
                     >
                       Register
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       key="Login"
-                      href="/login"
-                      aria-current={false ? "page" : undefined}
+                      to="/login"
                       className={classNames(
                         false
                           ? "bg-gray-900 text-white"
@@ -192,7 +190,7 @@ export default function Navbar() {
                       )}
                     >
                       Login
-                    </a>
+                    </Link>
                   </>
                 ) : (
                   <></>
@@ -230,14 +228,18 @@ export default function Navbar() {
                   </p>
                 </MenuItem>
 
-                <MenuItem>
-                  <a
-                    onClick={handle_logout}
-                    className="hover:cursor-pointer block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                  >
-                    Log out
-                  </a>
-                </MenuItem>
+                {loggedInUser ? (
+                  <MenuItem>
+                    <a
+                      onClick={handle_logout}
+                      className="hover:cursor-pointer block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                    >
+                      Log out
+                    </a>
+                  </MenuItem>
+                ) : (
+                  <></>
+                )}
               </MenuItems>
             </Menu>
           </div>
