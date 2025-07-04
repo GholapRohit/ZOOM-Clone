@@ -39,6 +39,7 @@ const login = async (req, res) => {
         process.env.JWT_SECRET_KEY,
         { expiresIn: "3d" }
       );
+      console.log("Token generated:", jwtToken);
 
       res.cookie("token", jwtToken, {
         httpOnly: true,
@@ -49,6 +50,7 @@ const login = async (req, res) => {
 
       user.token = jwtToken;
       await user.save();
+      console.log("User token saved:", user);
       // Respond with the token
       return res
         .status(httpStatus.OK)
