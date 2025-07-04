@@ -60,6 +60,7 @@ const login = async (req, res) => {
         .json({ message: "Invalid Password", success: false });
     }
   } catch (e) {
+    console.log("Error during login:", e);
     return res
       .status(httpStatus.INTERNAL_SERVER_ERROR)
       .json({ message: e, success: false });
