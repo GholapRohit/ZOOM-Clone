@@ -28,7 +28,7 @@ export default function Navbar() {
 
   const handle_logout = async () => {
     try {
-      const url = "http://localhost:8080/logout";
+      const url = "https://zoom-clone-backend-q57o.onrender.com/logout";
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-type": "application/json" },
@@ -50,7 +50,7 @@ export default function Navbar() {
 
   const check_login = async () => {
     try {
-      const url = "http://localhost:8080/check-auth";
+      const url = "https://zoom-clone-backend-q57o.onrender.com/check-auth";
       const response = await fetch(url, {
         method: "GET",
         headers: { "Content-type": "application/json" },
@@ -72,7 +72,7 @@ export default function Navbar() {
   useEffect(() => {
     (async function setInitialUser() {
       try {
-        const url = "http://localhost:8080/check-auth";
+        const url = "https://zoom-clone-backend-q57o.onrender.com/check-auth";
         const response = await fetch(url, {
           method: "GET",
           headers: { "Content-type": "application/json" },

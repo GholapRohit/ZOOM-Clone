@@ -25,7 +25,12 @@ const io = connectToSocket(server);
 dotenv.config();
 
 // Enables CORS for all routes.
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(
+  cors({
+    origin: "https://zoom-clone-frontend-ck17.onrender.com",
+    credentials: true,
+  })
+);
 // Parses incoming JSON payloads with a size limit of 40kb.
 app.use(express.json());
 // Parses incoming requests with URL-encoded payloads, with a size limit of 40kb.
@@ -38,10 +43,6 @@ app.use("/", userRoutes);
 
 const PORT = process.env.PORT || 8080;
 const MONGO_URL = process.env.MONGO_URL;
-
-app.get("/", (req, res) => {
-  res.send("Welcome");
-});
 
 const start = (async () => {
   await mongoose.connect(MONGO_URL);
