@@ -1,18 +1,21 @@
 import { useState } from "react";
-import { handleError, handleSuccess } from "../utils/Message";
-import { useNavigate } from "react-router-dom";
+import { handleError, handleSuccess } from "../utils/Message"; // Toast helpers for showing messages
+import { useNavigate } from "react-router-dom"; // For navigation after login
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext"; // Auth context for user state
 
 const Login = () => {
+  // Get the current user and function to set user from context
   const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // For programmatic navigation
 
+  // State for login form fields
   const [loginInfo, setLoginInfo] = useState({
     username: "",
     password: "",
   });
 
+  // Update state as user types in the form
   const handleChange = (e) => {
     const { name, value } = e.target;
     let copyLoginInfo = { ...loginInfo };
@@ -20,31 +23,32 @@ const Login = () => {
     setLoginInfo(copyLoginInfo);
   };
 
+  // Handle form submission for login
   const handle_login = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submit
     const { username, password } = loginInfo;
     if (!username || !password) {
-      return handleError("Please provide all the Details");
+      return handleError("Please provide all the Details"); // Show error if fields are empty
     }
     try {
       const url = "https://zoom-clone-backend-q57o.onrender.com/login";
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(loginInfo),
+        credentials: "include", // Send cookies for authentication
+        body: JSON.stringify(loginInfo), // Send username and password
       });
       const result = await response.json();
       const { message, success } = result;
       if (success) {
-        setLoggedInUser(username);
-        handleSuccess(message);
-        navigate("/");
+        setLoggedInUser(username); // Update context with logged-in user
+        handleSuccess(message); // Show success toast
+        navigate("/"); // Redirect to home page
       } else {
-        return handleError(message);
+        return handleError(message); // Show error from backend
       }
     } catch (error) {
-      return handleError(error);
+      return handleError(error); // Show network/server error
     }
   };
 

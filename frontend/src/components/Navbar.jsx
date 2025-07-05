@@ -6,27 +6,27 @@ import {
   MenuButton,
   MenuItem,
   MenuItems,
-} from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+} from "@headlessui/react"; // Headless UI components for accessible menus and navbars
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"; // Hamburger and close icons
+import { Link } from "react-router-dom"; // React Router navigation
 
-import ZOOMlogo from "../../public/assets/Zoom_Logo.png";
-import user from "../../public/assets/user.png";
-import { handleError, handleSuccess } from "../utils/Message";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import ZOOMlogo from "../../public/assets/Zoom_Logo.png"; // Logo image
+import user from "../../public/assets/user.png"; // User avatar image
+import { handleError, handleSuccess } from "../utils/Message"; // Toast/alert helpers
+import { useNavigate } from "react-router-dom"; // For programmatic navigation
+import { useEffect, useContext } from "react"; // React hooks for side effects and context
+import { AuthContext } from "../context/AuthContext"; // Auth state/context
 
+// Helper for conditional class names
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
   const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
-
   const navigate = useNavigate();
 
+  // Handles user logout
   const handle_logout = async () => {
     try {
       const url = "https://zoom-clone-backend-q57o.onrender.com/logout";
@@ -38,9 +38,9 @@ export default function Navbar() {
       const result = await response.json();
       const { message, success } = result;
       if (success) {
-        setLoggedInUser("");
-        handleSuccess(message);
-        navigate("/");
+        setLoggedInUser(""); // Clear user in context
+        handleSuccess(message); // Show success toast
+        navigate("/"); // Redirect to home
       } else {
         return handleError(message);
       }
@@ -49,6 +49,7 @@ export default function Navbar() {
     }
   };
 
+  // Checks if user is logged in before navigating to profile
   const check_login = async () => {
     try {
       const url = "https://zoom-clone-backend-q57o.onrender.com/check-auth";
@@ -70,6 +71,7 @@ export default function Navbar() {
     }
   };
 
+  // On mount, check if user is logged in and set context accordingly
   useEffect(() => {
     (async function setInitialUser() {
       try {
@@ -100,7 +102,7 @@ export default function Navbar() {
     >
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 ">
         <div className="relative flex h-16 items-center justify-between">
-          {/* Mobile menu button*/}
+          {/* Mobile menu button */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset">
               <span className="absolute -inset-0.5" />
@@ -115,6 +117,7 @@ export default function Navbar() {
               />
             </DisclosureButton>
           </div>
+          {/* Logo and desktop nav links */}
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
               <a href="/">
@@ -123,6 +126,7 @@ export default function Navbar() {
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
+                {/* Show "Join as Guest" if not logged in */}
                 {!loggedInUser ? (
                   <Link
                     key="Join as Guest"
@@ -139,6 +143,7 @@ export default function Navbar() {
                 ) : (
                   <></>
                 )}
+                {/* About and Contact links (not functional) */}
                 <a
                   key="About"
                   href="#"
@@ -165,6 +170,7 @@ export default function Navbar() {
                 >
                   Contact
                 </a>
+                {/* Register/Login links if not logged in */}
                 {!loggedInUser ? (
                   <>
                     <Link
@@ -198,14 +204,15 @@ export default function Navbar() {
               </div>
             </div>
           </div>
+          {/* Profile dropdown and user info */}
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            {/* Profile dropdown */}
-
+            {/* Show username if logged in */}
             {loggedInUser ? (
               <p className="text-white max-sm:hidden">{loggedInUser}</p>
             ) : (
               <></>
             )}
+            {/* User menu */}
             <Menu as="div" className="relative ml-3">
               <div>
                 <MenuButton className=" cursor-pointer relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
@@ -246,14 +253,15 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile navbar */}
+      {/* Mobile navbar (collapsible) */}
       <DisclosurePanel className="sm:hidden ">
         <div className="space-y-1 px-2 pt-2 pb-3 ">
+          {/* Mobile "Join as Guest" */}
           {!loggedInUser ? (
             <DisclosureButton
               key="Join as Guest"
-              as="a"
-              href="/meet"
+              as={Link}
+              to="/meet"
               aria-current={false ? "page" : undefined}
               className={classNames(
                 false
@@ -268,10 +276,11 @@ export default function Navbar() {
             <></>
           )}
 
+          {/* Mobile About/Contact (not functional) */}
           <DisclosureButton
             key="About"
-            as="a"
-            href="#"
+            as={Link}
+            to="#" // Not a real route
             aria-current={false ? "page" : undefined}
             className={classNames(
               false
@@ -284,8 +293,8 @@ export default function Navbar() {
           </DisclosureButton>
           <DisclosureButton
             key="Contact"
-            as="a"
-            href="#"
+            as={Link}
+            to="#" // Not a real route
             aria-current={false ? "page" : undefined}
             className={classNames(
               false
@@ -296,12 +305,13 @@ export default function Navbar() {
           >
             Contact
           </DisclosureButton>
+          {/* Mobile Register/Login */}
           {!loggedInUser ? (
             <>
               <DisclosureButton
                 key="Register"
-                as="a"
-                href="/register"
+                as={Link}
+                to="/register"
                 aria-current={false ? "page" : undefined}
                 className={classNames(
                   false
@@ -314,8 +324,8 @@ export default function Navbar() {
               </DisclosureButton>
               <DisclosureButton
                 key="Login"
-                as="a"
-                href="/login"
+                as={Link}
+                to="/login"
                 aria-current={false ? "page" : undefined}
                 className={classNames(
                   false

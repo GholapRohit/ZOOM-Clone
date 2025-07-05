@@ -3,15 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const MeetingCode = () => {
-  let navigate = useNavigate();
-  const [meetingCode, setMeetingCode] = useState("");
+  let navigate = useNavigate(); // Hook for programmatic navigation
+  const [meetingCode, setMeetingCode] = useState(""); // State to store the meeting code input
 
-  const { addToUserHistory } = useContext(AuthContext);
+  const { addToUserHistory } = useContext(AuthContext); // Get function to add meeting to user's history
 
+  // Function to handle joining a video call
   let handleJoinVideoCall = async (e) => {
-    e.preventDefault();
-    await addToUserHistory(meetingCode);
-    navigate(`/meet/${meetingCode}`);
+    e.preventDefault(); // Prevent default form submission
+    await addToUserHistory(meetingCode); // Add this meeting code to user's history (backend)
+    navigate(`/meet/${meetingCode}`); // Navigate to the video meeting page with the code
   };
 
   return (

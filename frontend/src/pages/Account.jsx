@@ -1,25 +1,29 @@
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { handleError } from "../utils/Message";
+import { useContext, useState, useEffect } from "react"; // Import React hooks
+import { AuthContext } from "../context/AuthContext"; // Import authentication context
+import { handleError } from "../utils/Message"; // Import error handler
 
 const Account = () => {
+  // Get the logged-in user's name and the function to fetch their meeting history from context
   const { loggedInUser, getHistoryOfUser } = useContext(AuthContext);
 
+  // State to store the user's meeting history
   const [meetings, setMeetings] = useState([]);
 
+  // Fetch the user's meeting history when the component mounts
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const history = await getHistoryOfUser();
-        setMeetings(history);
+        const history = await getHistoryOfUser(); // Fetch history from backend
+        setMeetings(history); // Store it in state
       } catch (error) {
-        handleError(error);
+        handleError(error); // Show error if fetch fails
       }
     };
 
     fetchHistory();
   }, []);
 
+  // Helper function to format a date string as DD/MM/YYYY
   let formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, "0");

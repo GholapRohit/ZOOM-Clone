@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { handleError, handleSuccess } from "../utils/Message";
-import { useNavigate } from "react-router-dom";
+import { handleError, handleSuccess } from "../utils/Message"; // Toast helpers for showing messages
+import { useNavigate } from "react-router-dom"; // For navigation after signup
 
 const Signup = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // For programmatic navigation
 
+  // State to hold the registration form fields
   let [registerInfo, setRegisterInfo] = useState({
     name: "",
     username: "",
     password: "",
   });
 
+  // Update state as user types in the form
   const handleChange = (e) => {
     const { name, value } = e.target;
     let copyRegisterInfo = { ...registerInfo };
@@ -18,30 +20,31 @@ const Signup = () => {
     setRegisterInfo(copyRegisterInfo);
   };
 
+  // Handle form submission for registration
   const handle_register = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submit
     const { name, username, password } = registerInfo;
     if (!name || !username || !password) {
-      return handleError("Please provide all the Details");
+      return handleError("Please provide all the Details"); // Show error if fields are empty
     }
     try {
       const url = "https://zoom-clone-backend-q57o.onrender.com/register";
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(registerInfo),
+        credentials: "include", // Send cookies for authentication
+        body: JSON.stringify(registerInfo), // Send registration data
       });
       const result = await response.json();
       const { message, success } = result;
       if (success) {
-        handleSuccess(message);
-        navigate("/");
+        handleSuccess(message); // Show success toast
+        navigate("/"); // Redirect to home page
       } else {
-        return handleError(message);
+        return handleError(message); // Show error from backend
       }
     } catch (error) {
-      return handleError(error);
+      return handleError(error); // Show network/server error
     }
   };
 
@@ -71,6 +74,7 @@ const Signup = () => {
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form method="POST" onSubmit={handle_register}>
+              {/* Name input */}
               <div>
                 <label
                   htmlFor="email"
@@ -89,6 +93,7 @@ const Signup = () => {
                 />
               </div>
 
+              {/* Username input */}
               <div className="mt-6">
                 <label
                   htmlFor="username"
@@ -107,6 +112,7 @@ const Signup = () => {
                 />
               </div>
 
+              {/* Password input */}
               <div className="mt-6">
                 <label
                   htmlFor="password"
@@ -125,6 +131,7 @@ const Signup = () => {
                 />
               </div>
 
+              {/* Submit button */}
               <div className="mt-6">
                 <span className="block w-full rounded-md shadow-sm">
                   <button
