@@ -1,84 +1,73 @@
 // React hooks for lifecycle (useEffect), referencing DOM (useRef), and managing state (useState).
 import { useEffect, useRef, useState } from "react";
 
-// Material UI and icon imports for UI controls
-import Button from "@mui/material/Button"; // Button component
-import IconButton from "@mui/material/IconButton"; // Icon button component
-import Badge from "@mui/material/Badge"; // Badge for notifications
-
-// Video/audio and control icons from react-icons
+import Button from "@mui/material/Button"; // Material UI button
+import IconButton from "@mui/material/IconButton"; // Material UI icon button
+import Badge from "@mui/material/Badge"; // Material UI badge for notifications
 import {
   FaVideo,
   FaVideoSlash,
   FaMicrophone,
   FaMicrophoneSlash,
-} from "react-icons/fa";
+} from "react-icons/fa"; // Video/audio icons
 import {
   MdCallEnd,
   MdScreenShare,
   MdStopScreenShare,
   MdChat,
-} from "react-icons/md";
-import { IoMdSend } from "react-icons/io"; // Send icon for chat
+} from "react-icons/md"; // Call/screen/chat icons
 
-// Socket.io for real-time communication
-import { io } from "socket.io-client";
-
-// React context and navigation
+import { io } from "socket.io-client"; // For real-time communication
+import { IoMdSend } from "react-icons/io"; // Send icon
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext"; // Auth context for user info
 import { useNavigate } from "react-router-dom"; // For navigation
 
-// Import server URLs (prod/dev)
-import server from "../environment";
+import server from "../environment"; // Server URLs
 
-// Use production server URL for socket connection
-const server_url = server.prod;
+const server_url = server.prod; // Use production server URL
 
-// Global object to store all peer connections (WebRTC)
-let connections = {};
+let connections = {}; // Store all peer connections
 
-// ICE server config for WebRTC (STUN server for NAT traversal)
 const peerConfigConnections = {
-  iceServers: [{ urls: "stun:stun.l.google.com:19320" }],
+  // ICE servers help peers discover each other and traverse NAT/firewalls.
+  iceServers: [{ urls: "stun:stun.l.google.com:19320" }], // ICE server config for WebRTC
 };
 
-// Main VideoMeet component
 const VideoMeet = () => {
-  // Get logged-in user from context
-  const { loggedInUser } = useContext(AuthContext);
+  const { loggedInUser } = useContext(AuthContext); // Get logged-in user from context
   const navigate = useNavigate(); // Navigation hook
 
-  // Refs for socket, socket id, local video, and remote video refs
-  let socketRef = useRef(); // Socket.io client instance
-  let socketIdRef = useRef(); // Current user's socket ID
-  let localVideoRef = useRef(); // Ref to local <video> element
-  let videoRef = useRef(); // Ref for remote video streams
+  // Refs for:
+  let socketRef = useRef(); // socket.io client
+  let socketIdRef = useRef(); // current user's socket ID
+  let localVideoRef = useRef(); // ref to local <video> element
+  let videoRef = useRef(); // dynamic ref for remote streams
 
-  // State variables for UI and media
-  let [videoAvailable, setVideoAvailable] = useState(true); // Is camera available
-  let [audioAvailable, setAudioAvailable] = useState(true); // Is mic available
-  let [video, setVideo] = useState(true); // Video state (on/off)
-  let [audio, setAudio] = useState(true); // Audio state (on/off)
-  let [screen, setScreen] = useState(false); // Screen sharing state
-  let [showModal, setModal] = useState(false); // Show/hide chat modal
-  let [screenAvailable, setScreenAvailable] = useState(true); // Is screen sharing available
-  let [messages, setMessages] = useState([]); // Chat messages
-  let [message, setMessage] = useState(""); // Current chat input
-  let [newMessages, setNewMessages] = useState(0); // Unread chat count
-  let [askForUsername, setAskForUsername] = useState(true); // Show lobby before joining
-  let [videos, setVideos] = useState([]); // Array of remote video streams
+  // State variables for video/audio/screen/chat/etc.
+  let [videoAvailable, setVideoAvailable] = useState(true);
+  let [audioAvailable, setAudioAvailable] = useState(true);
+  let [video, setVideo] = useState([]);
+  let [audio, setAudio] = useState();
+  let [screen, setScreen] = useState(false);
+  let [showModal, setModal] = useState(false);
+  let [screenAvailable, setScreenAvailable] = useState(true);
+  let [messages, setMessages] = useState([]);
+  let [message, setMessage] = useState("");
+  let [newMessages, setNewMessages] = useState(0);
+  let [askForUsername, setAskForUsername] = useState(true);
+  let [videos, setVideos] = useState([]);
 
-  // Request permissions for camera/mic/screen and set up local stream
+  // Check for permissions and set up local stream
   async function getPermissions() {
     try {
-      // Request camera permission
+      // Request video permission
       let videoPermission = await navigator.mediaDevices.getUserMedia({
         video: true,
       });
       videoPermission ? setVideoAvailable(true) : setVideoAvailable(false);
 
-      // Request mic permission
+      // Request audio permission
       let audioPermission = await navigator.mediaDevices.getUserMedia({
         audio: true,
       });
@@ -89,7 +78,7 @@ const VideoMeet = () => {
         ? setScreenAvailable(true)
         : setScreenAvailable(false);
 
-      // If either camera or mic is available, get user media
+      // If video or audio is available, get user media
       if (videoAvailable || audioAvailable) {
         let userMediaStream = await navigator.mediaDevices.getUserMedia({
           video: videoAvailable,
@@ -131,6 +120,7 @@ const VideoMeet = () => {
       connections[id].addStream(window.localStream);
 
       connections[id].createOffer().then((description) => {
+        console.log(description);
         connections[id]
           .setLocalDescription(description)
           .then(() => {
@@ -165,6 +155,7 @@ const VideoMeet = () => {
 
           for (let id in connections) {
             connections[id].addStream(window.localStream);
+
             connections[id].createOffer().then((description) => {
               connections[id]
                 .setLocalDescription(description)
@@ -182,7 +173,7 @@ const VideoMeet = () => {
     );
   };
 
-  // Helper to create a silent audio track (for muted streams)
+  // Helper to create a silent audio track
   let silence = () => {
     let ctx = new AudioContext();
     let oscillator = ctx.createOscillator();
@@ -192,7 +183,7 @@ const VideoMeet = () => {
     return Object.assign(dst.stream.getAudioTracks()[0], { enabled: false });
   };
 
-  // Helper to create a black video track (for disabled camera)
+  // Helper to create a black video track
   let black = ({ width = 640, height = 480 } = {}) => {
     let canvas = Object.assign(document.createElement("canvas"), {
       width,
@@ -228,7 +219,7 @@ const VideoMeet = () => {
     }
   }, [video, audio]);
 
-  // Handle incoming signaling messages from server (WebRTC)
+  // Handle incoming signaling messages from server
   let gotMessageFromServer = (fromId, message) => {
     let signal = JSON.parse(message);
 
@@ -308,6 +299,8 @@ const VideoMeet = () => {
             }
           };
           connections[socketListId].onaddstream = (event) => {
+            console.log("BEFORE:", videoRef.current);
+            console.log("FINDING ID: ", socketListId);
             setVideos((prevVideos) => {
               const exists = prevVideos.some(
                 (v) => v.socketId === socketListId
@@ -378,10 +371,12 @@ const VideoMeet = () => {
   // Toggle video on/off
   let handleVideo = () => {
     setVideo(!video);
+    // getUserMedia();
   };
   // Toggle audio on/off
   let handleAudio = () => {
     setAudio(!audio);
+    // getUserMedia();
   };
 
   // Success callback for screen sharing
