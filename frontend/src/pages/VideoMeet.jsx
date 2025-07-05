@@ -38,36 +38,35 @@ const VideoMeet = () => {
   const { loggedInUser } = useContext(AuthContext); // Get logged-in user from context
   const navigate = useNavigate(); // Navigation hook
 
-  // Refs for:
   let socketRef = useRef(); // socket.io client
   let socketIdRef = useRef(); // current user's socket ID
   let localVideoRef = useRef(); // ref to local <video> element
   let videoRef = useRef(); // dynamic ref for remote streams
 
   // State variables for video/audio/screen/chat/etc.
-  let [videoAvailable, setVideoAvailable] = useState(true);
-  let [audioAvailable, setAudioAvailable] = useState(true);
-  let [video, setVideo] = useState([]);
-  let [audio, setAudio] = useState();
-  let [screen, setScreen] = useState(false);
-  let [showModal, setModal] = useState(false);
-  let [screenAvailable, setScreenAvailable] = useState(true);
-  let [messages, setMessages] = useState([]);
-  let [message, setMessage] = useState("");
-  let [newMessages, setNewMessages] = useState(0);
-  let [askForUsername, setAskForUsername] = useState(true);
-  let [videos, setVideos] = useState([]);
+  let [videoAvailable, setVideoAvailable] = useState(true); // Is camera available
+  let [audioAvailable, setAudioAvailable] = useState(true); // Is mic available
+  let [video, setVideo] = useState(true); // Video state (on/off)
+  let [audio, setAudio] = useState(true); // Audio state (on/off)
+  let [screen, setScreen] = useState(false); // Screen sharing state
+  let [showModal, setModal] = useState(false); // Show/hide chat modal
+  let [screenAvailable, setScreenAvailable] = useState(true); // Is screen sharing available
+  let [messages, setMessages] = useState([]); // Chat messages
+  let [message, setMessage] = useState(""); // Current chat input
+  let [newMessages, setNewMessages] = useState(0); // Unread chat count
+  let [askForUsername, setAskForUsername] = useState(true); // Show lobby before joining
+  let [videos, setVideos] = useState([]); // Array of remote video streams
 
   // Check for permissions and set up local stream
   async function getPermissions() {
     try {
-      // Request video permission
+      // Request camera permission
       let videoPermission = await navigator.mediaDevices.getUserMedia({
         video: true,
       });
       videoPermission ? setVideoAvailable(true) : setVideoAvailable(false);
 
-      // Request audio permission
+      // Request mic permission
       let audioPermission = await navigator.mediaDevices.getUserMedia({
         audio: true,
       });
