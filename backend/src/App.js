@@ -53,6 +53,6 @@ const start = (async () => {
   await mongoose.connect(MONGO_URL); // Connect to MongoDB.
   console.log("MongoDB connected");
   server.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}. [ http://localhost:${PORT} ]`);
+    console.log(`Listening on port ${PORT}`);
   });
 })();
