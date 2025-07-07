@@ -49,11 +49,11 @@ app.use("/", userRoutes);
 // Serve static files from the React app
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
 // Catch-all: send back React's index.html for any route not handled by your API
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+  res.sendFile(path.join(__dirname, "../../frontend/dist", "index.html"));
 });
 
 // Set the port and MongoDB connection URL from environment variables (with defaults).
