@@ -1,51 +1,56 @@
-//  Web framework for building APIs and web servers.
+// Import Express, a web framework for building APIs and web servers.
 import express from "express";
-// Node.js HTTP server creator, needed for integrating with Socket.IO.
+// Import createServer from Node's HTTP module, needed for integrating with Socket.IO.
 import { createServer } from "node:http";
-// ODM (Object Document Mapping) for MongoDB, used for database operations.
+// Import Mongoose, an ODM (Object Document Mapper) for MongoDB.
 import mongoose from "mongoose";
-// Middleware to enable Cross-Origin Resource Sharing.
+// Import CORS middleware to enable Cross-Origin Resource Sharing.
 import cors from "cors";
-// Custom function to initialize Socket.IO (from your socketManager.js).
+// Import custom function to initialize Socket.IO from your socketManager.js.
 import { connectToSocket } from "./controllers/socketManager.js";
-// It contains all user-related endpoints, such as registration, login, etc.
+// Import user-related routes (registration, login, etc.).
 import userRoutes from "./routes/users.routes.js";
 
+// Import dotenv to load environment variables from .env file.
 import dotenv from "dotenv";
 
+// Middleware to parse cookies from HTTP requests.
 import cookieParser from "cookie-parser";
 
-// Creates an Express application.
+// Create an Express application instance.
 const app = express();
-// Wraps the Express app in an HTTP server (required for Socket.IO).
+// Wrap the Express app in an HTTP server (required for Socket.IO).
 const server = createServer(app);
-// Initializes Socket.IO and attaches it to the HTTP server.
+// Initialize Socket.IO and attach it to the HTTP server.
 const io = connectToSocket(server);
 
+// Load environment variables from .env file.
 dotenv.config();
 
-// Enables CORS for all routes.
+// Enable CORS for all routes, allowing requests from your frontend domain and sending credentials (cookies).
 app.use(
   cors({
     origin: "https://zoom-clone-frontend-ck17.onrender.com",
     credentials: true,
   })
 );
-// Parses incoming JSON payloads with a size limit of 40kb.
+// Parse incoming JSON payloads.
 app.use(express.json());
-// Parses incoming requests with URL-encoded payloads, with a size limit of 40kb.
+// Parse incoming URL-encoded payloads.
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cookieParser());
+app.use(cookieParser()); // Parse cookies from incoming requests.
 
-// All routes defined inside userRoutes will be accessible under this path. (eg. /login)
+// Mount all user-related routes at the root path (e.g., /login, /register, etc.).
 app.use("/", userRoutes);
 
+// Set the port and MongoDB connection URL from environment variables (with defaults).
 const PORT = process.env.PORT || 8080;
 const MONGO_URL = process.env.MONGO_URL;
 
+// Start the server and connect to MongoDB.
 const start = (async () => {
-  await mongoose.connect(MONGO_URL);
+  await mongoose.connect(MONGO_URL); // Connect to MongoDB.
   console.log("MongoDB connected");
   server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}. [ http://localhost:${PORT} ]`);

@@ -10,7 +10,7 @@ export const connectToSocket = (server) => {
   // Create a new Socket.IO server attached to the provided HTTP server
   const io = new Server(server, {
     cors: {
-      origin: "*", // Allow all origins (for development)
+      origin: "https://zoom-clone-frontend-ck17.onrender.com", // Allow specific origin
       methods: ["GET", "POST"], // Allow GET and POST methods
       allowedHeaders: ["*"], // Allow all headers
       credentials: true, // Allow credentials

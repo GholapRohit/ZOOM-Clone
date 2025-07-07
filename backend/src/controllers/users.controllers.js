@@ -1,14 +1,19 @@
 // Import the User model (Mongoose schema)
 import { User } from "../models/user.model.js";
 
+// Import the Meeting model (for meeting history)
 import { Meeting } from "../models/meeting.model.js";
-// Import HTTP status codes for readable responses
+
+// Import HTTP status codes for readable responses (e.g., 200, 404, 500)
 import httpStatus from "http-status";
+
 // Import bcrypt for password hashing and comparison
 import bcrypt from "bcrypt";
 
+// Import jsonwebtoken for creating and verifying JWT tokens
 import jwt from "jsonwebtoken";
 
+// ---------------------- LOGIN CONTROLLER ----------------------
 const login = async (req, res) => {
   // Destructure username and password from request body
   let { username, password } = req.body;
@@ -29,18 +34,17 @@ const login = async (req, res) => {
         .status(httpStatus.NOT_FOUND)
         .json({ message: "User Not Found", success: false });
     }
-    console.log("Provided password:", password);
-    console.log("User password from DB:", user.password);
+
     // Compare provided password with hashed password in DB
     if (await bcrypt.compare(password, user.password)) {
-      // If password matches, generate a random token
+      // If password matches, generate a JWT token
       let jwtToken = jwt.sign(
         { username: user.username, _id: user._id },
         process.env.JWT_SECRET_KEY,
         { expiresIn: "3d" }
       );
-      console.log("Token generated:", jwtToken);
 
+      // Set the token as an HTTP-only cookie
       res.cookie("token", jwtToken, {
         httpOnly: true,
         secure: true, // set false if testing on localhost without HTTPS
@@ -48,10 +52,11 @@ const login = async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000 * 3, // 3 days
       });
 
+      // Save the token in the user document (optional, for reference)
       user.token = jwtToken;
       await user.save();
-      console.log("User token saved:", user);
-      // Respond with the token
+
+      // Respond with success
       return res
         .status(httpStatus.OK)
         .json({ message: "Login Successful", success: true });
@@ -62,6 +67,7 @@ const login = async (req, res) => {
         .json({ message: "Invalid Password", success: false });
     }
   } catch (e) {
+    // Handle server errors
     console.log("Error during login:", e);
     return res
       .status(httpStatus.INTERNAL_SERVER_ERROR)
@@ -69,6 +75,7 @@ const login = async (req, res) => {
   }
 };
 
+// ---------------------- REGISTER CONTROLLER ----------------------
 const register = async (req, res) => {
   // Destructure registration fields from request body
   let { name, username, password } = req.body;
@@ -76,7 +83,7 @@ const register = async (req, res) => {
   try {
     // Check if a user with the same username already exists
     const existingUser = await User.findOne({ username });
-    // If user exists, return 302
+    // If user exists, return 409 Conflict
     if (existingUser) {
       return res
         .status(httpStatus.CONFLICT)
@@ -100,12 +107,14 @@ const register = async (req, res) => {
       .status(httpStatus.CREATED)
       .json({ message: "New User Registered", success: true });
   } catch (e) {
+    // Handle server errors
     return res
       .status(httpStatus.INTERNAL_SERVER_ERROR)
       .json({ message: e, success: false });
   }
 };
 
+// ---------------------- LOGOUT CONTROLLER ----------------------
 const logout = async (req, res) => {
   try {
     // Clear the token cookie
@@ -120,30 +129,37 @@ const logout = async (req, res) => {
       .status(httpStatus.OK)
       .json({ message: "Logout Successful", success: true });
   } catch (e) {
+    // Handle server errors
     return res
       .status(httpStatus.INTERNAL_SERVER_ERROR)
       .json({ message: e, success: false });
   }
 };
 
+// ---------------------- GET USER MEETING HISTORY ----------------------
 const getUserHistory = async (req, res) => {
-  const token = req.cookies.token;
+  const token = req.cookies.token; // Get token from cookies
   try {
+    // Find user by token
     const user = await User.findOne({ token: token });
+    // Find all meetings for this user
     const meetings = await Meeting.find({ user_id: user.username });
-    res.json(meetings);
+    res.json(meetings); // Return meetings as JSON
   } catch (e) {
     res.json({ message: `ERROR: ${e}` });
   }
 };
 
+// ---------------------- ADD MEETING TO HISTORY ----------------------
 const addToHistory = async (req, res) => {
-  const token = req.cookies.token;
-  const { meeting_code } = req.body;
+  const token = req.cookies.token; // Get token from cookies
+  const { meeting_code } = req.body; // Get meeting code from request
 
   try {
+    // Find user by token
     const user = await User.findOne({ token: token });
 
+    // Create a new meeting record
     const newMeeting = new Meeting({
       user_id: user.username,
       meeting_code: meeting_code,
@@ -152,10 +168,12 @@ const addToHistory = async (req, res) => {
 
     await newMeeting.save();
 
+    // Respond with success
     res.status(httpStatus.CREATED).json({ message: "Added code to history" });
   } catch (e) {
     res.json({ message: `Something went wrong ${e}` });
   }
 };
 
+// Export all controller functions for use in routes
 export { login, register, logout, getUserHistory, addToHistory };
