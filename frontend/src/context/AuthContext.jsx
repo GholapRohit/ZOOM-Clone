@@ -14,8 +14,10 @@ const AuthProvider = ({ children }) => {
       let url = `https://zoom-clone-backend-q57o.onrender.com/get_all_activity?user=${loggedInUser}`;
       let response = await fetch(url, {
         method: "GET",
-        headers: { "Content-type": "application/json" },
-        credentials: "include", // Send cookies for authentication
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
       let data = await response.json();
 
@@ -32,8 +34,10 @@ const AuthProvider = ({ children }) => {
         "https://zoom-clone-backend-q57o.onrender.com/add_to_activity",
         {
           method: "POST",
-          headers: { "Content-type": "application/json" },
-          credentials: "include", // Send cookies for authentication
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
           body: JSON.stringify({ meeting_code: meetingCode }),
         }
       );

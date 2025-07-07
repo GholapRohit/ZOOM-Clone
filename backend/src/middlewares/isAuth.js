@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"; // Import JWT library for verifying tokens
 // Middleware function to authenticate JWT token from cookies
 async function authenticateToken(req, res, next) {
   try {
-    const token = req.cookies.token; // Get the token from the request cookies
+    const token = req.headers.authorization?.split(" ")[1]; // Bearer <token>
 
     // If no token is found, respond with 401 Unauthorized
     if (!token) {

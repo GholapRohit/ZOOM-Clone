@@ -32,7 +32,6 @@ const Signup = () => {
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        credentials: "include", // Send cookies for authentication
         body: JSON.stringify(registerInfo), // Send registration data
       });
       const result = await response.json();

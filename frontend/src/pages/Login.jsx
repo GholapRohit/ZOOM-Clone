@@ -35,12 +35,12 @@ const Login = () => {
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        credentials: "include", // Send cookies for authentication
         body: JSON.stringify(loginInfo), // Send username and password
       });
       const result = await response.json();
-      const { message, success } = result;
-      if (success) {
+      const { message, success, token } = result;
+      if (success && token) {
+        localStorage.setItem("token", token);
         setLoggedInUser(username); // Update context with logged-in user
         handleSuccess(message); // Show success toast
         navigate("/"); // Redirect to home page

@@ -44,14 +44,6 @@ const login = async (req, res) => {
         { expiresIn: "3d" }
       );
 
-      // Set the token as an HTTP-only cookie
-      res.cookie("token", jwtToken, {
-        httpOnly: true,
-        secure: true, // set false if testing on localhost without HTTPS
-        sameSite: "none",
-        maxAge: 24 * 60 * 60 * 1000 * 3, // 3 days
-      });
-
       // Save the token in the user document (optional, for reference)
       user.token = jwtToken;
       await user.save();
@@ -59,10 +51,13 @@ const login = async (req, res) => {
       console.log("JWT token:", jwtToken);
       console.log("ENV JWT key:", process.env.JWT_SECRET_KEY);
 
-      // Respond with success
-      return res
-        .status(httpStatus.OK)
-        .json({ message: "Login Successful", success: true });
+      // Respond with success and Store token in local storage
+      return res.status(httpStatus.OK).json({
+        message: "Login Successful",
+        success: true,
+        token: jwtToken, // <-- Send token in response
+        username: user.username, // Optional: send username too
+      });
     } else {
       // If password does not match, return 401
       return res
@@ -120,13 +115,6 @@ const register = async (req, res) => {
 // ---------------------- LOGOUT CONTROLLER ----------------------
 const logout = async (req, res) => {
   try {
-    // Clear the token cookie
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: true, // set false if testing on localhost without HTTPS
-      sameSite: "none",
-    });
-
     // Respond with success message
     return res
       .status(httpStatus.OK)
@@ -141,7 +129,8 @@ const logout = async (req, res) => {
 
 // ---------------------- GET USER MEETING HISTORY ----------------------
 const getUserHistory = async (req, res) => {
-  const token = req.cookies.token; // Get token from cookies
+  const token = req.headers.authorization?.split(" ")[1]; // Bearer <token>
+
   try {
     // Find user by token
     const user = await User.findOne({ token: token });

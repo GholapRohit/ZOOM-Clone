@@ -33,11 +33,11 @@ export default function Navbar() {
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        credentials: "include",
       });
       const result = await response.json();
       const { message, success } = result;
       if (success) {
+        localStorage.removeItem("token"); // Clear token from local storage
         setLoggedInUser(""); // Clear user in context
         handleSuccess(message); // Show success toast
         navigate("/"); // Redirect to home
@@ -52,11 +52,14 @@ export default function Navbar() {
   // Checks if user is logged in before navigating to profile
   const check_login = async () => {
     try {
+      const token = localStorage.getItem("token");
       const url = "https://zoom-clone-backend-q57o.onrender.com/check-auth";
       const response = await fetch(url, {
         method: "GET",
-        headers: { "Content-type": "application/json" },
-        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
       const result = await response.json();
       const { success } = result;
@@ -75,11 +78,14 @@ export default function Navbar() {
   useEffect(() => {
     (async function setInitialUser() {
       try {
+        const token = localStorage.getItem("token");
         const url = "https://zoom-clone-backend-q57o.onrender.com/check-auth";
         const response = await fetch(url, {
           method: "GET",
-          headers: { "Content-type": "application/json" },
-          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         });
         const result = await response.json();
         const { success } = result;

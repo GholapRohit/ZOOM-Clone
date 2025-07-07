@@ -11,8 +11,10 @@ const Landing = () => {
       const url = "https://zoom-clone-backend-q57o.onrender.com/check-auth";
       const response = await fetch(url, {
         method: "GET",
-        headers: { "Content-type": "application/json" },
-        credentials: "include", // Include cookies for authentication
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
       const result = await response.json();
       const { success } = result;
