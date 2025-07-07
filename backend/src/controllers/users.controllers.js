@@ -48,7 +48,7 @@ const login = async (req, res) => {
       res.cookie("token", jwtToken, {
         httpOnly: true,
         secure: true, // set false if testing on localhost without HTTPS
-        sameSite: "None",
+        sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000 * 3, // 3 days
       });
 
@@ -124,7 +124,7 @@ const logout = async (req, res) => {
     res.clearCookie("token", {
       httpOnly: true,
       secure: true, // set false if testing on localhost without HTTPS
-      sameSite: "None",
+      sameSite: "none",
     });
 
     // Respond with success message
