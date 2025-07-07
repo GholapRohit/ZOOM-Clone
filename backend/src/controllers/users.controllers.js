@@ -56,6 +56,9 @@ const login = async (req, res) => {
       user.token = jwtToken;
       await user.save();
 
+      console.log("JWT token:", jwtToken);
+      console.log("ENV JWT key:", process.env.JWT_SECRET_KEY);
+
       // Respond with success
       return res
         .status(httpStatus.OK)
