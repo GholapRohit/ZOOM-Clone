@@ -46,8 +46,8 @@ const VideoMeet = () => {
   // State variables for video/audio/screen/chat/etc.
   let [videoAvailable, setVideoAvailable] = useState(true); // Is camera available
   let [audioAvailable, setAudioAvailable] = useState(true); // Is mic available
-  let [video, setVideo] = useState(true); // Video state (on/off)
-  let [audio, setAudio] = useState(true); // Audio state (on/off)
+  let [video, setVideo] = useState(false); // Video state (on/off)
+  let [audio, setAudio] = useState(false); // Audio state (on/off)
   let [screen, setScreen] = useState(false); // Screen sharing state
   let [showModal, setModal] = useState(false); // Show/hide chat modal
   let [screenAvailable, setScreenAvailable] = useState(true); // Is screen sharing available
