@@ -45,9 +45,7 @@ const Footer = () => {
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
-                  <p>
-                    Bharti Vidyabhavan, Wakewadi, Pune, Maharashtra - 411015
-                  </p>
+                  <p>COEP Hostel, Shivajinagar, Pune, Maharashtra - 411015</p>
                 </li>
                 <li>
                   <p>rohitgholap2005@gmail.com</p>

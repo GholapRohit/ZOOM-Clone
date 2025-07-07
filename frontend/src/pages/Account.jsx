@@ -35,7 +35,7 @@ const Account = () => {
 
   return (
     <>
-      <div className="bg-gray-100 w-screen py-5">
+      <div className="bg-gray-100 h-screen w-screen p-5">
         <div className="bg-white shadow p-3 rounded-md">
           <h1 className="text-2xl font-bold mb-4">History</h1>
           <div className="grid gap-4 sm:grid-cols-3 md:grid-cols-4">

@@ -33,7 +33,7 @@ const Landing = () => {
   };
 
   return (
-    <div className="sm:h-screen flex flex-col w-screen bg-[url(/public/assets/background.png)] bg-center bg-cover">
+    <div className="sm:h-screen flex flex-col bg-[url(/public/assets/background.png)] bg-center bg-cover">
       {/* Hero Section */}
       <div className="flex max-sm:gap-8 m-5 max-sm:flex-col-reverse">
         {/* Left side: Text and button */}
