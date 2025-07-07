@@ -544,7 +544,7 @@ const VideoMeet = () => {
           <div className="bg-white flex flex-1 overflow-auto">
             {/* Chat modal */}
             {showModal ? (
-              <div className="bg-gray-100 absolute top-0 right-0 bottom-10 flex flex-col max-sm:w-screen border border-l-gray-300">
+              <div className="bg-gray-100 fixed top-0 right-0 bottom-0 flex flex-col max-sm:w-screen border border-l-gray-300">
                 <div className="bg-blue-500 p-4 text-white text-center">
                   <span>Chat Room</span>
                 </div>
@@ -553,7 +553,7 @@ const VideoMeet = () => {
                   <div className="flex flex-col space-y-2">
                     {messages.length > 0 ? (
                       messages.map((item, index) =>
-                        loggedInUser || "Anonymous" == item.sender ? (
+                        (loggedInUser || "Anonymous") == item.sender ? (
                           <div key={index} className="flex justify-end">
                             <div className="flex flex-col">
                               <p className="font-semibold text-sm text-right">
