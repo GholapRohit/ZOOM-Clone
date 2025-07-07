@@ -10,12 +10,14 @@ import cors from "cors";
 import { connectToSocket } from "./controllers/socketManager.js";
 // Import user-related routes (registration, login, etc.).
 import userRoutes from "./routes/users.routes.js";
-
 // Import dotenv to load environment variables from .env file.
 import dotenv from "dotenv";
-
 // Middleware to parse cookies from HTTP requests.
 import cookieParser from "cookie-parser";
+// Import path module to handle file paths.
+import path from "path";
+// Import fileURLToPath to convert module URLs to file paths (for ES modules).
+import { fileURLToPath } from "url";
 
 // Create an Express application instance.
 const app = express();
@@ -43,6 +45,16 @@ app.use(cookieParser()); // Parse cookies from incoming requests.
 
 // Mount all user-related routes at the root path (e.g., /login, /register, etc.).
 app.use("/", userRoutes);
+
+// Serve static files from the React app
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+// Catch-all: send back React's index.html for any route not handled by your API
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+});
 
 // Set the port and MongoDB connection URL from environment variables (with defaults).
 const PORT = process.env.PORT || 8080;
