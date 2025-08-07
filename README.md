@@ -2,7 +2,7 @@
 
 ## **Brief Overview**
 
-The ZOOM Clone is a full-stack web application that replicates core functionalities of Zoom, enabling users to host and join video meetings, chat in real time, and manage their meeting history. It features user authentication, meeting management, chat, and responsive design for seamless video conferencing experiences.
+This is a full-stack web application that replicates core functionalities of Zoom, enabling users to host and join video meetings, chat in real time, and manage their meeting history. It features user authentication, meeting management, chat, and responsive design for seamless video conferencing experiences.
 
 ## **Technologies Used**
 
