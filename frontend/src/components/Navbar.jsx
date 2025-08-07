@@ -10,7 +10,7 @@ import {
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"; // Hamburger and close icons
 import { Link } from "react-router-dom"; // React Router navigation
 
-import ZOOMlogo from "../../public/assets/Zoom_Logo.png"; // Logo image
+import ZyncLogo from "../../public/assets/zync-logo.png"; // Logo image
 import user from "../../public/assets/user.png"; // User avatar image
 import { handleError, handleSuccess } from "../utils/Message"; // Toast/alert helpers
 import { useNavigate } from "react-router-dom"; // For programmatic navigation
@@ -127,7 +127,7 @@ export default function Navbar() {
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
               <a href="/">
-                <img alt="brand" src={ZOOMlogo} className="h-5 w-auto" />
+                <img alt="brand" src={ZyncLogo} className="h-5 w-auto" />
               </a>
             </div>
             <div className="hidden sm:ml-6 sm:block">

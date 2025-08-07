@@ -45,7 +45,7 @@ const Landing = () => {
           </p>
           <p className="text-2xl text-white  font-mono">
             See, Hear, Feel, Together on{" "}
-            <span className="text-blue-400 font-semibold">ZOOM</span>
+            <span className="text-blue-400 font-semibold">Zync</span>
           </p>
           {/* "Get Started" button triggers login check */}
           <button
