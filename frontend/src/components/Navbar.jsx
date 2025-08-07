@@ -10,7 +10,7 @@ import {
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"; // Hamburger and close icons
 import { Link } from "react-router-dom"; // React Router navigation
 
-import ZyncLogo from "../../public/assets/zync-logo.png"; // Logo image
+import ZyncLogo from "../../public/assets/zync_logo.png"; // Logo image
 import user from "../../public/assets/user.png"; // User avatar image
 import { handleError, handleSuccess } from "../utils/Message"; // Toast/alert helpers
 import { useNavigate } from "react-router-dom"; // For programmatic navigation
