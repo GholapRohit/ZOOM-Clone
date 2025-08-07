@@ -1,4 +1,4 @@
-# ZOOM Clone
+# Zync - Real Time, Real Chat
 
 ## **Brief Overview**
 
